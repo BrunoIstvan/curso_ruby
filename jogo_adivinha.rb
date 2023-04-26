@@ -46,7 +46,7 @@ def ask_difficulty()
     puts "\n**********************************************\n\n"
     puts "Informe em qual nível de dificuldade deseja jogar (de 1 a 5): "
     difficulty = gets 
-    while difficulty !~ /\D/ || !difficulty.to_i.between?(1, 5)
+    while !(difficulty.strip !~ /\D/) || !difficulty.to_i.between?(1, 5)
         puts "A dificuldade do jogo precisa ser um número entre 1 e 5. Informe novamente: "
         difficulty = gets
     end
