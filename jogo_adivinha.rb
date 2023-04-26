@@ -146,6 +146,7 @@ end
 
 def calculate_points(input_number, secret_number)
     points -= (input_number - secret_number).abs * 0.5
+    points
 end
 
 def play()
