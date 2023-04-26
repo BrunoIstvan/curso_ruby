@@ -47,7 +47,8 @@ def ask_difficulty()
     puts "\n**********************************************\n\n"
     puts "Informe em qual nível de dificuldade deseja jogar (de 1 a 5): "
     difficulty = gets 
-    while difficulty !~ /\D/ || difficulty.to_i < 1 || difficulty.to_i > 5
+    is_invalid_number = difficulty !~ /\D/ || difficulty.to_i < 1 || difficulty.to_i > 5
+    while is_invalid_number
         puts "A dificuldade do jogo precisa ser um número entre 1 e 5. Informe novamente: "
         difficulty = gets
     end
@@ -72,7 +73,8 @@ end
 def get_shot_number(max_numbers)
     puts "Dê o seu chute entre 0 e #{max_numbers}: "
     input_number = gets
-    while input_number !~ /\D/ || input_number.to_i < 1 || input_number.to_i > 100
+    is_invalid_number = input_number !~ /\D/ || input_number.to_i < 1 || input_number.to_i > max_numbers
+    while is_invalid_number
         puts "Seu chute precisa ser um número entre 0 e #{max_numbers}. Chute novamente: "
         input_number = gets
     end
@@ -142,6 +144,10 @@ def available_play_again()
     return try_again.upcase == "S"
 end
 
+def calculate_points(input_number, secret_number)
+    points -= (input_number - secret_number).abs * 0.5
+end
+
 def play()
 
     print_intro()
@@ -164,9 +170,7 @@ def play()
 
             print_trying(attempts, max_attempts, shots)
             input_number = get_shot_number(max_numbers)
-
-            points -= (input_number - secret_number).abs * 0.5
-
+            points = calculate_points(input_number, secret_number)
             shots << input_number
             hit = available_shot(input_number, secret_number, attempts)
             attempts += 1
