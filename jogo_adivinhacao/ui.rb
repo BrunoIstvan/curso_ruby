@@ -112,10 +112,9 @@ def print_win_and_points_or_lose(hit, points, secret_number, attempt)
     end
 end
 
-def available_play_again()
+def print_play_again()
     puts "\n"
     puts "********************************************************************************************"
     puts "\n"
     puts "Informe S ou s para jogar novamente ou qualquer outra tecla para encerrar: "
-    return gets.strip.upcase == "S"
 end

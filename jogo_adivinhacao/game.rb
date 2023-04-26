@@ -55,6 +55,11 @@ def available_is_repeated_shot(input_number, max_numbers, shots)
 
 end
 
+def available_play_again()
+    print_play_again()
+    return gets.strip.upcase == "S"
+end
+
 def play()
 
     print_intro()
@@ -64,7 +69,6 @@ def play()
     
     while playing
 
-        # max_attempts = 5 
         difficulties = get_difficulties()
         print_difficulties(difficulties)
         difficulty = ask_difficulty(difficulties)
