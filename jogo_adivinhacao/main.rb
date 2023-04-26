@@ -38,10 +38,7 @@ def print_difficulties(difficulties)
     end
 end
 
-def ask_difficulty()
-
-    difficulties = get_difficulties()
-    print_difficulties(difficulties)
+def ask_difficulty(difficulties)
 
     puts "\n**********************************************\n\n"
     puts "Informe em qual nível de dificuldade deseja jogar (de 1 a 5): "
@@ -162,7 +159,9 @@ def play()
     while playing
 
         max_attempts = 5 
-        max_numbers = ask_difficulty()
+        difficulties = get_difficulties()
+        print_difficulties(difficulties)
+        max_numbers = ask_difficulty(difficulties)
         secret_number = generate_secret_number(max_numbers)
         
         points = 1000
@@ -182,7 +181,6 @@ def play()
         end
         
         print_win_and_points_or_lose(hit, points, secret_number, attempts-1)
-
         playing = available_play_again()
 
     end 
