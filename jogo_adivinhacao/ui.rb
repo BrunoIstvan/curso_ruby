@@ -1,5 +1,6 @@
 def print_intro()
     puts
+    puts "            P"
     puts "        P  /_\\  P                              "
     puts "       /_\\_|_|_/_\\                             "
     puts "   n_n | ||. .|| | n_n         Bem vindo ao    "
@@ -18,35 +19,35 @@ def get_player_name()
 end
 
 def print_difficulties(difficulties)
-    puts "**********************************************"
+    puts "********************************************************************************************"
     puts "DIFICULDADES"
-    puts "**********************************************\n\n"
+    puts "********************************************************************************************\n\n"
     difficulties.each_with_index do |child, index| 
         child.each do |key, value| 
-            puts "#{index + 1} - #{key} - de 0 a #{value}" 
+            puts "#{index + 1} - #{key} - de 0 a #{value[0]} em #{value[1]} tentativas" 
         end
     end
 end
 
 def ask_difficulty(difficulties)
 
-    puts "\n**********************************************\n\n"
+    puts "\n********************************************************************************************\n\n"
     puts "Informe em qual nível de dificuldade deseja jogar (de 1 a 5): "
     difficulty = gets 
     while !(difficulty.strip !~ /\D/) || !difficulty.to_i.between?(1, 5)
-        puts "A dificuldade do jogo precisa ser um número entre 1 e 5. Informe novamente: "
-        difficulty = gets
+        puts "A dificuldade precisa ser um número entre 1 e 5. Informe novamente: "
+        difficulty = gets.strip
     end
     puts "\n"
-    print_chosen_difficulty(difficulties, difficulty)
+    difficulty
 end
 
-def print_chosen_difficulty(difficulties, difficulty)
+def print_and_return_chosen_difficulty(difficulties, difficulty)
     difficulties[difficulty.to_i - 1].each { 
         |key, value| 
-        puts "**********************************************\n"
-        puts "Você escolheu a dificuldade #{key} de 0 a #{value}."
-        return value
+        puts "********************************************************************************************\n"
+        puts "Você escolheu a dificuldade #{key} de 0 a #{value[0]} em #{value[1]} tentativas."
+        return value[0], value[1]
     }
 end
 
@@ -84,12 +85,12 @@ end
 
 def print_win_and_points_or_lose(hit, points, secret_number, attempt) 
     puts "\n"
-    puts "**********************************************"
+    puts "********************************************************************************************"
     puts "\n"
     if !hit 
         puts "HUUMMMM! Infelizmente suas chances acabaram! O número secreto era #{secret_number}. Tente novamente?"
     else
-        puts "Parabéns!! Você acertou na #{attempt}a tentativa!!"
+        puts "PARABÉNS!! Você acertou na #{attempt}a tentativa!!"
         puts
         puts "             OOOOOOOOOOO               "
         puts "         OOOOOOOOOOOOOOOOOOO           "
@@ -113,7 +114,7 @@ end
 
 def available_play_again()
     puts "\n"
-    puts "**********************************************"
+    puts "********************************************************************************************"
     puts "\n"
     puts "Informe S ou s para jogar novamente ou qualquer outra tecla para encerrar: "
     return gets.strip.upcase == "S"

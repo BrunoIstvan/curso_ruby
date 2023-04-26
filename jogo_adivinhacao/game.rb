@@ -21,11 +21,11 @@ end
 
 def get_difficulties()
     return [
-        { "MUITO FÁCIL": 30 }, 
-        { "FÁCIL": 60 }, 
-        { "MÉDIO": 100 }, 
-        { "DIFÍCIL": 150 }, 
-        { "MUITO DIFÍCIL": 200 } 
+        { "MUITO FÁCIL": [30, 5] }, 
+        { "FÁCIL": [60, 6] }, 
+        { "MÉDIO": [100, 7] }, 
+        { "DIFÍCIL": [150, 7] }, 
+        { "MUITO DIFÍCIL": [200, 7] } 
     ]
 end
 
@@ -64,10 +64,11 @@ def play()
     
     while playing
 
-        max_attempts = 5 
+        # max_attempts = 5 
         difficulties = get_difficulties()
         print_difficulties(difficulties)
-        max_numbers = ask_difficulty(difficulties)
+        difficulty = ask_difficulty(difficulties)
+        max_numbers, max_attempts = print_and_return_chosen_difficulty(difficulties, difficulty)
         secret_number = generate_secret_number(max_numbers)
         
         points = 1000
