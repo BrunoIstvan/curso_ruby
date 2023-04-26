@@ -1,4 +1,3 @@
-
 def print_intro()
     puts
     puts "        P  /_\\  P                              "
@@ -47,8 +46,7 @@ def ask_difficulty()
     puts "\n**********************************************\n\n"
     puts "Informe em qual nível de dificuldade deseja jogar (de 1 a 5): "
     difficulty = gets 
-    is_invalid_number = difficulty !~ /\D/ || difficulty.to_i < 1 || difficulty.to_i > 5
-    while is_invalid_number
+    while difficulty !~ /\D/ || !difficulty.to_i.between?(1, 5)
         puts "A dificuldade do jogo precisa ser um número entre 1 e 5. Informe novamente: "
         difficulty = gets
     end
@@ -56,7 +54,7 @@ def ask_difficulty()
     difficulties[difficulty.to_i - 1].each { 
         |key, value| 
         puts "**********************************************\n"
-        puts "Você escolheu a dificuldade #{key} de 0 a #{value}"
+        puts "Você escolheu a dificuldade #{key} de 0 a #{value}."
         return value
     }
 end
@@ -64,20 +62,30 @@ end
 def print_trying(sequence, max_attempts, shots)    
     puts "\n"
     if shots.any? # if shots.size > 0
-        puts "Tentativa #{sequence} de #{max_attempts} - Chutes anteriores #{shots}"
+        puts "Tentativa #{sequence} de #{max_attempts} - Chutes anteriores #{shots}."
     else
         puts "Tentativa #{sequence} de #{max_attempts}"
     end
 end
 
-def get_shot_number(max_numbers)
+def get_shot_number(shots, max_numbers)
     puts "Dê o seu chute entre 0 e #{max_numbers}: "
     input_number = gets
-    is_invalid_number = input_number !~ /\D/ || input_number.to_i < 1 || input_number.to_i > max_numbers
-    while is_invalid_number
-        puts "Seu chute precisa ser um número entre 0 e #{max_numbers}. Chute novamente: "
-        input_number = gets
+
+    loop do
+        if !(input_number.strip !~ /\D/) || !input_number.to_i.between?(0, max_numbers)
+            puts "Seu chute precisa ser um número entre 0 e #{max_numbers}. Chute novamente: "
+            input_number = gets
+            next
+        end
+        if shots.include?(input_number.to_i)
+            puts "Você já chutou esse número. Chute novamente: "
+            input_number = gets
+            next
+        end
+        break
     end
+
     puts "\n"
     puts "Você chutou #{remove_new_line(input_number)}... Será que você acertou? "
     return input_number.to_i
@@ -87,11 +95,7 @@ def available_shot(number, secret, attempt)
     correct = number == secret
     if !correct
         bigger = number > secret
-        if bigger
-            puts "Não foi dessa vez :( - O número que você chutou é MAIOR que o número secreto"
-        else 
-            puts "Não foi dessa vez :( - O número que você chutou é MENOR que o número secreto"
-        end
+        puts "Não foi dessa vez :( - O número que você chutou é #{bigger ? "MAIOR" : "MENOR"} que o número secreto."
         return false
     end
     return true
@@ -139,14 +143,13 @@ def available_play_again()
     puts "\n"
     puts "**********************************************"
     puts "\n"
-    puts "Informe S ou s para jogar novamente ou qualquer outra tecla para encerrar"
+    puts "Informe S ou s para jogar novamente ou qualquer outra tecla para encerrar: "
     try_again = remove_new_line(gets)
     return try_again.upcase == "S"
 end
 
-def calculate_points(input_number, secret_number)
+def calculate_points(points, input_number, secret_number)
     points -= (input_number - secret_number).abs * 0.5
-    points
 end
 
 def play()
@@ -170,8 +173,8 @@ def play()
         while attempts <= max_attempts && hit == false
 
             print_trying(attempts, max_attempts, shots)
-            input_number = get_shot_number(max_numbers)
-            points = calculate_points(input_number, secret_number)
+            input_number = get_shot_number(shots, max_numbers)
+            points = calculate_points(points, input_number, secret_number)
             shots << input_number
             hit = available_shot(input_number, secret_number, attempts)
             attempts += 1
